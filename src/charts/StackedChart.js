@@ -57,11 +57,13 @@ const StackedBarChart = ({
       .text(yLabel)
 
     const y = d3.scaleLinear().domain([0, 1000000]).range([height, 0])
+    const axis = d3.axisLeft(y).ticks(height / 100)
+
     svg
       .append('g')
       .attr('class', 'c-chart__yAxis')
       .attr('transform', 'translate(0, 0)')
-      .call(d3.axisLeft(y))
+      .call(axis)
 
     const color = d3
       .scaleOrdinal()

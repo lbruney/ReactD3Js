@@ -1,10 +1,13 @@
 .c-card {
   position: relative;
   background-color: #fff;
-  color: #656565;
+  color: #000;
   border-radius: 15px;
   padding: 40px 50px;
   margin: 20px 0;
+}
+.c-card h1 {
+  margin-bottom: 0;
 }
 .c-card h2 {
   font-size: 22px;
@@ -17,7 +20,7 @@
 }
 .c-chart {
   width: 80vw;
-  height: 50vh;
+  height: 70vh;
 }
 .c-chart__bar text {
   font-size: 0.55em;
