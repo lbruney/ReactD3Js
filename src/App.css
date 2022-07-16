@@ -1,4 +1,8 @@
-#d3demo {
+.c-chart {
   width: 80vw;
   height: 50vh;
+}
+.c-container {
+  width: 90%;
+  margin: 50px;
 }
