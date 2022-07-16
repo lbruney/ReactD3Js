@@ -1,7 +1,12 @@
 import * as d3 from 'd3'
 import { useRef, useEffect, useState } from 'react'
+import Swatch from '../fixtures/Swatch'
 
-const StackedBarChart = ({ data }) => {
+const StackedBarChart = ({
+  data,
+  yLabel = 'Population',
+  xLabel = 'Age group'
+}) => {
   const d3Chart = useRef()
   const [chartData, setChartData] = useState(data)
 
@@ -10,25 +15,15 @@ const StackedBarChart = ({ data }) => {
   }, [])
 
   const drawChart = () => {
-    const ages = [
-      '0-4',
-      '5-11',
-      '12-15',
-      '16-19',
-      '20-29',
-      '30-39',
-      '40-49',
-      '50-59',
-      '60-64',
-      '65-69',
-      '70-74',
-      '75+'
-    ]
-    const vaxCategories = ['fullyVaxed', 'oneBooster', 'twoBooster']
+    const xLabelText = (l) => l + ' years'
 
-    const margin = { top: 20, right: 100, bottom: 30, left: 100 }
-    const width = 800 - margin.left - margin.right
-    const height = 400 - margin.top - margin.bottom
+    const ages = chartData.map((d) => xLabelText(d.ageRange))
+    const vaxCategories = Object.keys(chartData[0]).slice(0, 3)
+
+    const margin = { top: 20, right: 100, bottom: 90, left: 100 }
+    const $chart = d3.select('#chart')
+    const width = parseInt($chart.style('width')) - margin.left - margin.right
+    const height = parseInt($chart.style('height')) - margin.top - margin.bottom
 
     const svg = d3
       .select(d3Chart.current)
@@ -44,7 +39,21 @@ const StackedBarChart = ({ data }) => {
       .attr('transform', 'translate(0,' + height + ')')
       .call(d3.axisBottom(x).tickSizeOuter(0))
 
-    const y = d3.scaleLinear().domain([0, 900000]).range([height, 0])
+    svg
+      .append('text')
+      .attr('x', width / 2)
+      .attr('y', height + margin.top * 2)
+      .attr('text-anchor', 'middle')
+      .text(xLabel)
+
+    svg
+      .append('text')
+      .attr('x', (height / 2) * -1)
+      .attr('y', -70)
+      .attr('transform', 'rotate(-90)')
+      .text(yLabel)
+
+    const y = d3.scaleLinear().domain([0, 1000000]).range([height, 0])
     svg
       .append('g')
       .attr('class', 'c-chart__yAxis')
@@ -54,7 +63,7 @@ const StackedBarChart = ({ data }) => {
     const color = d3
       .scaleOrdinal()
       .domain(vaxCategories)
-      .range(['#e41a1c', '#377eb8', '#4daf4a'])
+      .range([Swatch.slate, Swatch.burntOrange, Swatch.matisse])
 
     //  stack per subgroup
     const stackedData = d3.stack().keys(vaxCategories)(chartData)
@@ -67,7 +76,7 @@ const StackedBarChart = ({ data }) => {
       .enter()
       .append('g')
       .attr('class', function (d) {
-        return 'c-chart__' + d.key
+        return 'c-chart__bar c-chart__' + d.key
       })
       .attr('fill', function (d) {
         return color(d.key)
@@ -78,9 +87,11 @@ const StackedBarChart = ({ data }) => {
         return d
       })
       .enter()
+      .append('g')
+      .attr('class', 'c-chart__barWrap')
       .append('rect')
       .attr('x', function (d) {
-        return x(d.data.ageRange)
+        return x(xLabelText(d.data.ageRange))
       })
       .attr('y', function (d) {
         return y(d[1])
@@ -89,6 +100,18 @@ const StackedBarChart = ({ data }) => {
         return y(d[0]) - y(d[1])
       })
       .attr('width', x.bandwidth())
+
+      .append('text')
+      .text(function (d) {
+        return d[1]
+      })
+      .attr('y', function (d) {
+        let pos = y(d[1])
+        return pos + pos / 4
+      })
+      .attr('x', function (d) {
+        return x(xLabelText(d.data.ageRange))
+      })
   }
 
   return (

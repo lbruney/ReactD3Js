@@ -1,8 +1,32 @@
+.c-card {
+  position: relative;
+  background-color: #fff;
+  color: #656565;
+  border-radius: 15px;
+  padding: 40px 50px;
+  margin: 20px 0;
+}
+.c-card h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.c-card.c-card--reverse {
+  background-color: rgba(0,0,0,0.4);
+  color: #fff;
+}
 .c-chart {
   width: 80vw;
   height: 50vh;
 }
+.c-chart__bar rect {
+  opacity: 0.5;
+}
+.c-chart__bar rect:hover {
+  cursor: pointer;
+  opacity: 1;
+}
 .c-container {
   width: 90%;
-  margin: 50px;
+  margin: auto;
 }
