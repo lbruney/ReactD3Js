@@ -19,6 +19,11 @@
   width: 80vw;
   height: 50vh;
 }
+.c-chart__bar text {
+  font-size: 0.55em;
+  fill: #fff;
+  font-weight: bold;
+}
 .c-chart__bar rect {
   opacity: 0.5;
 }

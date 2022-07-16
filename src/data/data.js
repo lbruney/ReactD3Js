@@ -3,73 +3,85 @@ const CovidDataJuly = [
     fullyVaxed: 0,
     oneBooster: 0,
     twoBooster: 0,
-    ageRange: '0-4'
+    ageRange: '0-4',
+    total: 0
   },
   {
     fullyVaxed: 227115,
     oneBooster: 20310,
     twoBooster: 10000,
-    ageRange: '5-11'
+    ageRange: '5-11',
+    total: 257425
   },
   {
     fullyVaxed: 146057,
     oneBooster: 86698,
     twoBooster: 325,
-    ageRange: '12-15'
+    ageRange: '12-15',
+    total: 233080
   },
   {
     fullyVaxed: 131917,
     oneBooster: 132408,
     twoBooster: 912,
-    ageRange: '16-19'
+    ageRange: '16-19',
+    total: 265237
   },
   {
     fullyVaxed: 411130,
     oneBooster: 337593,
     twoBooster: 4663,
-    ageRange: '20-29'
+    ageRange: '20-29',
+    total: 753386
   },
   {
     fullyVaxed: 373205,
     oneBooster: 397747,
     twoBooster: 9143,
-    ageRange: '30-39'
+    ageRange: '30-39',
+    total: 780095
   },
   {
     fullyVaxed: 290620,
     oneBooster: 394825,
     twoBooster: 14006,
-    ageRange: '40-49'
+    ageRange: '40-49',
+    total: 699451
   },
   {
     fullyVaxed: 298357,
     oneBooster: 424535,
     twoBooster: 106366,
-    ageRange: '50-59'
+    ageRange: '50-59',
+    total: 830351
   },
   {
     fullyVaxed: 124469,
     oneBooster: 215906,
     twoBooster: 83716,
-    ageRange: '60-64'
+    ageRange: '60-64',
+    total: 424831
   },
   {
     fullyVaxed: 89330,
     oneBooster: 173089,
     twoBooster: 105261,
-    ageRange: '65-69'
+    ageRange: '65-69',
+    total: 368596
   },
   {
     fullyVaxed: 67076,
     oneBooster: 131368,
     twoBooster: 103902,
-    ageRange: '70-74'
+    ageRange: '70-74',
+    total: 303087
   },
   {
     fullyVaxed: 119234,
     oneBooster: 211714,
     twoBooster: 170639,
-    ageRange: '75+'
+    ageRange: '75+',
+    total: 502342
   }
 ]
 

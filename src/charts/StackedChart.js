@@ -15,13 +15,16 @@ const StackedBarChart = ({
   }, [])
 
   const drawChart = () => {
-    const xLabelText = (l) => l + ' years'
+    const $chart = d3.select('#chart')
+
+    const isLgScreen = () => parseInt($chart.style('width')) > 1000
+    const xLabelText = (l) => l + (isLgScreen() ? ' years' : '')
 
     const ages = chartData.map((d) => xLabelText(d.ageRange))
     const vaxCategories = Object.keys(chartData[0]).slice(0, 3)
 
     const margin = { top: 20, right: 100, bottom: 90, left: 100 }
-    const $chart = d3.select('#chart')
+
     const width = parseInt($chart.style('width')) - margin.left - margin.right
     const height = parseInt($chart.style('height')) - margin.top - margin.bottom
 
@@ -68,7 +71,7 @@ const StackedBarChart = ({
     //  stack per subgroup
     const stackedData = d3.stack().keys(vaxCategories)(chartData)
 
-    svg
+    const $wraps = svg
       .append('g')
       .selectAll('g')
       // Enter in the stack data = loop key per key = group per group
@@ -81,14 +84,13 @@ const StackedBarChart = ({
       .attr('fill', function (d) {
         return color(d.key)
       })
+    $wraps
       .selectAll('rect')
       // enter a second time = loop subgroup per subgroup to add all rectangles
       .data(function (d) {
         return d
       })
       .enter()
-      .append('g')
-      .attr('class', 'c-chart__barWrap')
       .append('rect')
       .attr('x', function (d) {
         return x(xLabelText(d.data.ageRange))
@@ -100,18 +102,28 @@ const StackedBarChart = ({
         return y(d[0]) - y(d[1])
       })
       .attr('width', x.bandwidth())
+    if (isLgScreen())
+      $wraps
+        .selectAll('text')
+        .data(function (d) {
+          return d
+        })
+        .enter()
+        .append('text')
+        .text(function (d) {
+          let diff = d[1] - d[0]
+          return diff > 30000 ? d[1] : ''
+        })
 
-      .append('text')
-      .text(function (d) {
-        return d[1]
-      })
-      .attr('y', function (d) {
-        let pos = y(d[1])
-        return pos + pos / 4
-      })
-      .attr('x', function (d) {
-        return x(xLabelText(d.data.ageRange))
-      })
+        .attr('y', function (d) {
+          //y(st + (ed - st) / 2)
+          let diff = d[1] - d[0]
+          let mid = y(d[0] + diff / 2)
+          return mid
+        })
+        .attr('x', function (d) {
+          return x(xLabelText(d.data.ageRange)) + 15
+        })
   }
 
   return (
