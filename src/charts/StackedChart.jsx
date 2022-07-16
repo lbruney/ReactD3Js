@@ -1,14 +1,21 @@
 import * as d3 from 'd3'
 import { useRef, useEffect, useState } from 'react'
+import Legend from '../components/Legend'
 import Swatch from '../fixtures/Swatch'
 
 const StackedBarChart = ({
   data,
+  labels,
   yLabel = 'Population',
   xLabel = 'Age group'
 }) => {
   const d3Chart = useRef()
   const [chartData, setChartData] = useState(data)
+  const vaxCategories = Object.keys(chartData[0]).slice(0, 3)
+  const color = d3
+    .scaleOrdinal()
+    .domain(vaxCategories)
+    .range([Swatch.slate, Swatch.burntOrange, Swatch.matisse])
 
   useEffect(() => {
     drawChart()
@@ -21,7 +28,6 @@ const StackedBarChart = ({
     const xLabelText = (l) => l + (isLgScreen() ? ' years' : '')
 
     const ages = chartData.map((d) => xLabelText(d.ageRange))
-    const vaxCategories = Object.keys(chartData[0]).slice(0, 3)
 
     const margin = { top: 20, right: 100, bottom: 90, left: 100 }
 
@@ -64,11 +70,6 @@ const StackedBarChart = ({
       .attr('class', 'c-chart__yAxis')
       .attr('transform', 'translate(0, 0)')
       .call(axis)
-
-    const color = d3
-      .scaleOrdinal()
-      .domain(vaxCategories)
-      .range([Swatch.slate, Swatch.burntOrange, Swatch.matisse])
 
     //  stack per subgroup
     const stackedData = d3.stack().keys(vaxCategories)(chartData)
@@ -129,8 +130,15 @@ const StackedBarChart = ({
   }
 
   return (
-    <div className='c-chart' id='chart'>
-      <svg ref={d3Chart}></svg>
+    <div className='c-chart'>
+      <div className='c-chart__legend'>
+        <svg id='legend'>
+          <Legend colorScale={color} labels={labels} />
+        </svg>
+      </div>
+      <div className='c-chart__graph' id='chart'>
+        <svg ref={d3Chart}></svg>
+      </div>
     </div>
   )
 }

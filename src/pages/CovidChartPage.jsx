@@ -6,7 +6,7 @@ import { useContext } from 'react'
 import Card from '../components/Card'
 
 function CovidChart() {
-  const { data } = useContext(AppContext)
+  const { data, labels } = useContext(AppContext)
   return (
     <div className='c-container'>
       <Card>
@@ -19,7 +19,7 @@ function CovidChart() {
           booster dose, compared with 48% of the national population that is
           fully vaccinated.
         </p>
-        <StackedChart data={data} />
+        <StackedChart data={data} labels={labels} />
       </Card>
     </div>
   )

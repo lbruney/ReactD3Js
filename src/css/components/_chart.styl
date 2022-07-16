@@ -1,6 +1,23 @@
 .c-chart 
-  width 80vw
-  height 70vh
+  &__graph 
+    width 80vw
+    height 70vh
+  &__legend 
+    p5()
+    pos-rel()
+    width 100%
+    margin-top 40px
+    g 
+      blk()
+    svg 
+      pos-abs()
+      width 100%
+      margin-left 10%
+      +md-max()
+        pos-rel()
+        p6()
+        margin-left 0
+
   &__bar 
     text 
       font-size .55em
