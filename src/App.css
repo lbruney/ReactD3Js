@@ -69,8 +69,8 @@ body {
   height: 70vh;
 }
 .c-chart__legend {
-  font-size: 0.88rem;
-  line-height: 1.714285714285714;
+  font-size: 0.75rem;
+  line-height: 1.833333333333333;
   position: relative;
   width: 100%;
   margin-top: 40px;
@@ -82,6 +82,7 @@ body {
   position: absolute;
   width: 100%;
   margin-left: 10%;
+  height: 90px;
 }
 @media (max-width: 1024px) {
   .c-chart__legend svg {
@@ -89,6 +90,7 @@ body {
     font-size: 0.75rem;
     line-height: 1.833333333333333;
     margin-left: 0;
+    height: initial;
   }
 }
 .c-chart__bar text {

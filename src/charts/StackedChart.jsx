@@ -2,6 +2,7 @@ import * as d3 from 'd3'
 import { useRef, useEffect, useState } from 'react'
 import Legend from '../components/Legend'
 import Swatch from '../fixtures/Swatch'
+import boot from '../handlers/boot'
 
 const StackedBarChart = ({
   data,
@@ -18,6 +19,11 @@ const StackedBarChart = ({
     .range([Swatch.slate, Swatch.burntOrange, Swatch.matisse])
 
   useEffect(() => {
+    window.addEventListener('resize', () => {
+      d3.select(d3Chart.current).selectChildren().remove()
+      drawChart()
+      boot()
+    })
     drawChart()
   }, [])
 
@@ -105,6 +111,10 @@ const StackedBarChart = ({
         return y(d[0]) - y(d[1])
       })
       .attr('width', x.bandwidth())
+      .attr('class', 'js-Tooltip')
+      .attr('data-tooltip', function (d) {
+        return d[1] + ', ' + d.data.ageRange
+      })
     if (isLgScreen())
       $wraps
         .selectAll('text')
@@ -115,7 +125,7 @@ const StackedBarChart = ({
         .append('text')
         .text(function (d) {
           let diff = d[1] - d[0]
-          return diff > 30000 ? d[1] : ''
+          return diff > 30000 ? d[1].toLocaleString() : ''
         })
 
         .attr('y', function (d) {

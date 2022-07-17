@@ -5,9 +5,9 @@ function Legend({ colorScale, labels = {} }) {
     return <div>Loading ... </div>
   }
 
-  const sqSize = 16
+  const sqSize = 14
   const yPos = (i) => {
-    return i * 24
+    return i * 20
   }
 
   return colorScale.domain().map((domain, index) => {
