@@ -31,10 +31,13 @@ const StackedBarChart = ({
   }, [])
 
   const handleChange = (e) => {
-    console.log('had change', e)
     let [population, id] = e.target.getAttribute('data-val').split(',')
     setPopulation(population)
     setRowId(Number(id))
+  }
+
+  const handlePopulationChange = (e) => {
+    setPopulation(+e.target.value)
   }
 
   const drawChart = () => {
@@ -87,18 +90,19 @@ const StackedBarChart = ({
       .attr('transform', 'translate(0, 0)')
       .call(axis)
 
-    //  stack per subgroup
     const stackedData = d3.stack().keys(vaxCategories)(chartData)
 
     const $wraps = svg
       .append('g')
       .selectAll('g')
-      // Enter in the stack data = loop key per key = group per group
       .data(stackedData)
       .enter()
       .append('g')
+      .attr('data-bars', function (d) {
+        return d.kay
+      })
       .attr('class', function (d) {
-        return 'c-chart__bar c-chart__' + d.key
+        return `js-legendGroup js-legendGroup--${d.key} c-chart__bars`
       })
       .attr('fill', function (d) {
         return color(d.key)
@@ -166,8 +170,13 @@ const StackedBarChart = ({
       <Tooltip>
         <form>
           <label></label>
-          <input type='number' name='population' value={population} />
-          <input type='hidden' name='id' value={rowId} />
+          <input
+            type='number'
+            name='population'
+            onChange={handlePopulationChange}
+            value={population}
+          />
+          <input type='hidden' name='id' readOnly value={rowId} />
         </form>
       </Tooltip>
     </div>

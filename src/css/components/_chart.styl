@@ -21,7 +21,7 @@
         margin-left 0
         height initial
 
-  &__bar 
+  &__bars 
     text 
       font-size .55em
       fill white
@@ -31,3 +31,15 @@
       &:hover 
         cursor pointer
         opacity 1
+
+      &.is-active 
+        stroke lime
+        stroke-width 2px
+    
+    &.is-inactive 
+      rect 
+        opacity .2 
+    
+    &.is-active 
+      rect 
+        opacity  1

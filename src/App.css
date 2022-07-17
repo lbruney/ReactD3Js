@@ -103,16 +103,26 @@ body {
     height: initial;
   }
 }
-.c-chart__bar text {
+.c-chart__bars text {
   font-size: 0.55em;
   fill: #fff;
   font-weight: bold;
 }
-.c-chart__bar rect {
+.c-chart__bars rect {
   opacity: 0.5;
 }
-.c-chart__bar rect:hover {
+.c-chart__bars rect:hover {
   cursor: pointer;
+  opacity: 1;
+}
+.c-chart__bars rect.is-active {
+  stroke: #0f0;
+  stroke-width: 2px;
+}
+.c-chart__bars.is-inactive rect {
+  opacity: 0.2;
+}
+.c-chart__bars.is-active rect {
   opacity: 1;
 }
 .c-container {
