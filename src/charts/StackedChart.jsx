@@ -1,6 +1,7 @@
 import * as d3 from 'd3'
 import { useRef, useEffect, useState } from 'react'
 import Legend from '../components/Legend'
+import Tooltip from '../components/Tooltip'
 import Swatch from '../fixtures/Swatch'
 import boot from '../handlers/boot'
 
@@ -11,8 +12,10 @@ const StackedBarChart = ({
   xLabel = 'Age group'
 }) => {
   const d3Chart = useRef()
+  const [rowId, setRowId] = useState(0)
+  const [population, setPopulation] = useState(0)
   const [chartData, setChartData] = useState(data)
-  const vaxCategories = Object.keys(chartData[0]).slice(0, 3)
+  const vaxCategories = Object.keys(chartData[0]).slice(1, 4)
   const color = d3
     .scaleOrdinal()
     .domain(vaxCategories)
@@ -26,6 +29,13 @@ const StackedBarChart = ({
     })
     drawChart()
   }, [])
+
+  const handleChange = (e) => {
+    console.log('had change', e)
+    let [population, id] = e.target.getAttribute('data-val').split(',')
+    setPopulation(population)
+    setRowId(Number(id))
+  }
 
   const drawChart = () => {
     const $chart = d3.select('#chart')
@@ -111,9 +121,9 @@ const StackedBarChart = ({
         return y(d[0]) - y(d[1])
       })
       .attr('width', x.bandwidth())
-      .attr('class', 'js-Tooltip')
+      .attr('class', 'js-btn--tooltip')
       .attr('data-tooltip', function (d) {
-        return d[1] + ', ' + d.data.ageRange
+        return d[1] + ', ' + d.data.id
       })
     if (isLgScreen())
       $wraps
@@ -140,7 +150,7 @@ const StackedBarChart = ({
   }
 
   return (
-    <div className='c-chart'>
+    <div className='c-chart' data-js-tooltip>
       <div className='c-chart__legend'>
         <svg id='legend'>
           <Legend colorScale={color} labels={labels} />
@@ -149,6 +159,17 @@ const StackedBarChart = ({
       <div className='c-chart__graph' id='chart'>
         <svg ref={d3Chart}></svg>
       </div>
+      <span
+        className='hide js-tooltipListener'
+        onClick={(e) => handleChange(e)}
+      ></span>
+      <Tooltip>
+        <form>
+          <label></label>
+          <input type='number' name='population' value={population} />
+          <input type='hidden' name='id' value={rowId} />
+        </form>
+      </Tooltip>
     </div>
   )
 }

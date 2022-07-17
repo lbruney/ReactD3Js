@@ -9,9 +9,9 @@ export const AppProvider = ({ children }) => {
     fullyVaxed:
       'Indiviudals who are fully vaccinated* but have not received a booster',
     oneBooster: 'Individuals who have received one booster doses',
-    twoBooster: 'Individuals who have received two booster doses',
-    additionalVax:
-      'Individuals who have received additional doses beyond boosters'
+    twoBooster: 'Individuals who have received two booster doses'
+    // additionalVax:
+    //   'Individuals who have received additional doses beyond boosters'
   })
 
   return (

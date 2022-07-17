@@ -1,3 +1,7 @@
+input {
+  border: solid 1px $col-lgt-grey;
+  padding: 3px;
+}
 .p1 {
   font-size: 1.5rem;
   line-height: 1.416666666666667;
@@ -44,6 +48,9 @@ body {
   text-size-adjust: none;
   position: relative;
 }
+.hide {
+  display: none;
+}
 .c-card {
   position: relative;
   background-color: #fff;
@@ -63,6 +70,9 @@ body {
 .c-card.c-card--reverse {
   background-color: rgba(0,0,0,0.4);
   color: #fff;
+}
+.c-chart {
+  position: relative;
 }
 .c-chart__graph {
   width: 80vw;
@@ -108,4 +118,16 @@ body {
 .c-container {
   width: 90%;
   margin: auto;
+}
+.c-tooltip {
+  display: none;
+  position: absolute;
+  z-index: 100;
+  padding: 20px;
+  background-color: #fff;
+  border: solid 1px #eee;
+  border-radius: 10px;
+}
+.c-tooltip.is-active {
+  display: block;
 }
