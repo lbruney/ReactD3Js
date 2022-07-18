@@ -9,16 +9,17 @@ const StackedBarChart = ({
   data,
   labels,
   yLabel = 'Population',
-  xLabel = 'Age group'
+  xLabel = 'Age group',
+  diffMin = 30000
 }) => {
   const d3Chart = useRef()
   const [rowId, setRowId] = useState(0)
   const [population, setPopulation] = useState(0)
   const [chartData, setChartData] = useState(data)
-  const vaxCategories = Object.keys(chartData[0]).slice(1, 4)
+  const subCategories = Object.keys(chartData[0]).slice(1, 4)
   const color = d3
     .scaleOrdinal()
-    .domain(vaxCategories)
+    .domain(subCategories)
     .range([Swatch.slate, Swatch.burntOrange, Swatch.matisse])
 
   useEffect(() => {
@@ -84,13 +85,29 @@ const StackedBarChart = ({
     const y = d3.scaleLinear().domain([0, 1000000]).range([height, 0])
     const axis = d3.axisLeft(y).ticks(height / 100)
 
+    const totalPopulation = (d) => {
+      let sum = 0
+
+      for (let cat of subCategories) {
+        sum += d[cat]
+      }
+
+      return sum
+    }
+
     svg
       .append('g')
       .attr('class', 'c-chart__yAxis')
       .attr('transform', 'translate(0, 0)')
       .call(axis)
 
-    const stackedData = d3.stack().keys(vaxCategories)(chartData)
+    const stackedData = d3.stack().keys(subCategories)(chartData)
+    const populationData = chartData.map((d) => {
+      return {
+        sum: totalPopulation(d),
+        ageRange: d.ageRange
+      }
+    })
 
     const $wraps = svg
       .append('g')
@@ -107,9 +124,9 @@ const StackedBarChart = ({
       .attr('fill', function (d) {
         return color(d.key)
       })
+
     $wraps
       .selectAll('rect')
-      // enter a second time = loop subgroup per subgroup to add all rectangles
       .data(function (d) {
         return d
       })
@@ -129,7 +146,7 @@ const StackedBarChart = ({
       .attr('data-tooltip', function (d) {
         return d[1] + ', ' + d.data.id
       })
-    if (isLgScreen())
+    if (isLgScreen()) {
       $wraps
         .selectAll('text')
         .data(function (d) {
@@ -139,9 +156,8 @@ const StackedBarChart = ({
         .append('text')
         .text(function (d) {
           let diff = d[1] - d[0]
-          return diff > 30000 ? d[1].toLocaleString() : ''
+          return diff > diffMin ? d[1].toLocaleString() : ''
         })
-
         .attr('y', function (d) {
           //y(st + (ed - st) / 2)
           let diff = d[1] - d[0]
@@ -151,6 +167,24 @@ const StackedBarChart = ({
         .attr('x', function (d) {
           return x(xLabelText(d.data.ageRange)) + 15
         })
+      $wraps
+        .selectAll('.sumtext')
+        .data(populationData)
+        .enter()
+        .append('text')
+        .text(function (d) {
+          return d.sum.toLocaleString()
+        })
+        .attr('class', function (d) {
+          return 'c-chart__total'
+        })
+        .attr('y', function (d) {
+          return y(d.sum) - 3
+        })
+        .attr('x', function (d) {
+          return x(xLabelText(d.ageRange)) + 10
+        })
+    }
   }
 
   return (

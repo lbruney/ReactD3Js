@@ -103,6 +103,13 @@ body {
     height: initial;
   }
 }
+.c-chart input {
+  width: 80px;
+}
+.c-chart__bars .c-chart__total {
+  font-size: 0.8em;
+  fill: #807e7e;
+}
 .c-chart__bars text {
   font-size: 0.55em;
   fill: #fff;
