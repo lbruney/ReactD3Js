@@ -18,7 +18,12 @@ function CovidChart() {
           booster dose, compared with 48% of the national population that is
           fully vaccinated.
         </p>
-        <StackedChart data={data} labels={labels} />
+        <StackedChart
+          data={data}
+          labels={labels}
+          subCatStart={1}
+          subCatEnd={5}
+        />
         <h2 className='txt--r'>
           <Link to='/about'>About ?</Link>
         </h2>

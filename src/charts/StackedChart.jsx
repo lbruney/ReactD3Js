@@ -11,7 +11,9 @@ const StackedBarChart = ({
   labels,
   yLabel = 'Population',
   xLabel = 'Age group',
-  diffMin = 30000
+  diffMin = 30000,
+  subCatStart = 0,
+  subCatEnd = 3
 }) => {
   const util = new BaseUtil()
   const d3Chart = useRef()
@@ -20,7 +22,7 @@ const StackedBarChart = ({
   const [population, setPopulation] = useState(0)
   const [chartData, setChartData] = useState(data)
   const [subCat, setSubCat] = useState()
-  const subCategories = Object.keys(chartData[0]).slice(1, 5)
+  const subCategories = Object.keys(chartData[0]).slice(subCatStart, subCatEnd)
 
   const color = d3
     .scaleOrdinal()
@@ -60,7 +62,7 @@ const StackedBarChart = ({
     for (let d in chartData) {
       if (rowId === chartData[d].id) {
         item = chartData[d]
-        item[subCat] = population - startPopulation
+        item[subCat] = population
         break
       }
     }
@@ -81,12 +83,18 @@ const StackedBarChart = ({
   const drawChart = () => {
     const $chart = d3.select('#chart')
 
-    const isLgScreen = () => parseInt($chart.style('width')) > 1000
+    const isLgScreen = () => parseInt($chart.style('width')) > 1024
     const xLabelText = (l) => l + (isLgScreen() ? ' years' : '')
 
     const ages = chartData.map((d) => xLabelText(d.ageRange))
+    const getMargins = () => (isLgScreen() ? 100 : 50)
 
-    const margin = { top: 20, right: 100, bottom: 90, left: 100 }
+    const margin = {
+      top: 20,
+      right: getMargins(),
+      bottom: 90,
+      left: getMargins()
+    }
 
     const width = parseInt($chart.style('width')) - margin.left - margin.right
     const height = parseInt($chart.style('height')) - margin.top - margin.bottom
@@ -119,9 +127,6 @@ const StackedBarChart = ({
       .attr('transform', 'rotate(-90)')
       .text(yLabel)
 
-    const y = d3.scaleLinear().domain([0, 1000000]).range([height, 0])
-    const axis = d3.axisLeft(y).ticks(height / 100)
-
     const totalPopulation = (d) => {
       let sum = 0
       for (let cat of subCategories) {
@@ -129,6 +134,8 @@ const StackedBarChart = ({
       }
       return sum
     }
+    const y = d3.scaleLinear().domain([0, 1000000]).range([height, 0])
+    const axis = d3.axisLeft(y).ticks(height / 100)
 
     svg
       .append('g')
@@ -179,7 +186,7 @@ const StackedBarChart = ({
       .attr('width', x.bandwidth())
       .attr('class', 'js-btn--tooltip')
       .attr('data-tooltip', function (d) {
-        return `${d[0]}, ${d[1]}, ${d.data.id}`
+        return `${d[0]}, ${d[1] - d[0]}, ${d.data.id}`
       })
     if (isLgScreen()) {
       $wraps
@@ -191,7 +198,7 @@ const StackedBarChart = ({
         .append('text')
         .text(function (d) {
           let diff = d[1] - d[0]
-          return diff > diffMin ? d[1].toLocaleString() : ''
+          return diff > diffMin ? diff.toLocaleString() : ''
         })
         .attr('y', function (d) {
           //y(st + (ed - st) / 2)

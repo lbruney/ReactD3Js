@@ -60,7 +60,7 @@ const CovidDataJuly = [
     fullyVaxed: 298357,
     oneBooster: 424535,
     twoBooster: 106366,
-    beyondBooster: 0,
+    beyondBooster: 1093,
     ageRange: '50-59'
   },
   {
@@ -68,7 +68,7 @@ const CovidDataJuly = [
     fullyVaxed: 124469,
     oneBooster: 215906,
     twoBooster: 83716,
-    beyondBooster: 0,
+    beyondBooster: 740,
     ageRange: '60-64'
   },
   {
@@ -76,7 +76,7 @@ const CovidDataJuly = [
     fullyVaxed: 89330,
     oneBooster: 173089,
     twoBooster: 105261,
-    beyondBooster: 0,
+    beyondBooster: 916,
     ageRange: '65-69'
   },
   {
@@ -84,7 +84,7 @@ const CovidDataJuly = [
     fullyVaxed: 67076,
     oneBooster: 131368,
     twoBooster: 103902,
-    beyondBooster: 0,
+    beyondBooster: 741,
     ageRange: '70-74'
   },
   {
@@ -92,7 +92,7 @@ const CovidDataJuly = [
     fullyVaxed: 119234,
     oneBooster: 211714,
     twoBooster: 170639,
-    beyondBooster: 0,
+    beyondBooster: 755,
     ageRange: '75+'
   }
 ]
