@@ -64,7 +64,6 @@ const StackedBarChart = ({
         break
       }
     }
-    console.log(item)
     setChartData(
       chartData.map((_item) =>
         _item.id === item.id ? { ..._item, ...item } : _item
@@ -74,7 +73,7 @@ const StackedBarChart = ({
   }
 
   const handleKeydown = (e) => {
-    if (e.code === 'Enter') {
+    if (util.isEnter(e)) {
       handleSubmit(e)
     }
   }
@@ -125,7 +124,6 @@ const StackedBarChart = ({
 
     const totalPopulation = (d) => {
       let sum = 0
-
       for (let cat of subCategories) {
         sum += d[cat]
       }

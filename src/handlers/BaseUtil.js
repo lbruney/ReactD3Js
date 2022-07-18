@@ -5,6 +5,9 @@ class BaseUtil {
       active: 'is-active',
       inactive: 'is-inactive'
     }
+    this.keycodes = {
+      enter: 'Enter'
+    }
   }
 
   getCoords(el, e) {
@@ -62,6 +65,10 @@ class BaseUtil {
     // matrix(scaleX, skewY, skewX, scaleY, translateX, translateY)
     let matrix = this.getTranslate(el).split(',')
     return +matrix[4]
+  }
+
+  isEnter(e) {
+    return e.code === this.keycodes.enter
   }
 }
 
