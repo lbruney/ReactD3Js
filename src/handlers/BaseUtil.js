@@ -1,4 +1,4 @@
-class Base {
+class BaseUtil {
   constructor(el) {
     this.el = el
     this.css = {
@@ -55,4 +55,4 @@ class Base {
   }
 }
 
-export default Base
+export default BaseUtil

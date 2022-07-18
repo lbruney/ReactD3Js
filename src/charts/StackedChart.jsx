@@ -14,31 +14,67 @@ const StackedBarChart = ({
 }) => {
   const d3Chart = useRef()
   const [rowId, setRowId] = useState(0)
+  const [startPopulation, setStartPopulation] = useState(0)
   const [population, setPopulation] = useState(0)
   const [chartData, setChartData] = useState(data)
-  const subCategories = Object.keys(chartData[0]).slice(1, 4)
+  const [subCat, setSubCat] = useState()
+  const subCategories = Object.keys(chartData[0]).slice(1, 5)
+
   const color = d3
     .scaleOrdinal()
     .domain(subCategories)
-    .range([Swatch.slate, Swatch.burntOrange, Swatch.matisse])
+    .range([Swatch.slate, Swatch.burntOrange, Swatch.matisse, Swatch.green])
 
   useEffect(() => {
     window.addEventListener('resize', () => {
-      d3.select(d3Chart.current).selectChildren().remove()
-      drawChart()
-      boot()
+      redrawChart()
     })
     drawChart()
   }, [])
 
-  const handleChange = (e) => {
-    let [population, id] = e.target.getAttribute('data-val').split(',')
-    setPopulation(population)
+  const redrawChart = () => {
+    d3.select(d3Chart.current).selectChildren().remove()
+    drawChart()
+    boot()
+  }
+
+  const handleTooltip = (e) => {
+    let [startPopulation, population, id, cat] = e.target
+      .getAttribute('data-val')
+      .split(',')
+    setStartPopulation(+startPopulation)
+    setPopulation(+population)
     setRowId(Number(id))
+    setSubCat(cat)
   }
 
   const handlePopulationChange = (e) => {
     setPopulation(+e.target.value)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    let item
+    for (let d in chartData) {
+      if (rowId === chartData[d].id) {
+        item = chartData[d]
+        item[subCat] = population - startPopulation
+        break
+      }
+    }
+    console.log(item)
+    setChartData(
+      chartData.map((_item) =>
+        _item.id === item.id ? { ..._item, ...item } : _item
+      )
+    )
+    redrawChart()
+  }
+
+  const handleKeydown = (e) => {
+    if (e.code === 'Enter') {
+      handleSubmit(e)
+    }
   }
 
   const drawChart = () => {
@@ -91,7 +127,6 @@ const StackedBarChart = ({
       for (let cat of subCategories) {
         sum += d[cat]
       }
-
       return sum
     }
 
@@ -101,7 +136,9 @@ const StackedBarChart = ({
       .attr('transform', 'translate(0, 0)')
       .call(axis)
 
+    console.log(chartData)
     const stackedData = d3.stack().keys(subCategories)(chartData)
+    console.log(stackedData)
     const populationData = chartData.map((d) => {
       return {
         sum: totalPopulation(d),
@@ -116,7 +153,7 @@ const StackedBarChart = ({
       .enter()
       .append('g')
       .attr('data-bars', function (d) {
-        return d.kay
+        return d.key
       })
       .attr('class', function (d) {
         return `js-legendGroup js-legendGroup--${d.key} c-chart__bars`
@@ -138,13 +175,17 @@ const StackedBarChart = ({
       .attr('y', function (d) {
         return y(d[1])
       })
-      .attr('height', function (d) {
+      .attr('height', function (d, i) {
+        if (i == 11) {
+          console.log(d)
+        }
+
         return y(d[0]) - y(d[1])
       })
       .attr('width', x.bandwidth())
       .attr('class', 'js-btn--tooltip')
       .attr('data-tooltip', function (d) {
-        return d[1] + ', ' + d.data.id
+        return `${d[0]}, ${d[1]}, ${d.data.id}`
       })
     if (isLgScreen()) {
       $wraps
@@ -199,15 +240,16 @@ const StackedBarChart = ({
       </div>
       <span
         className='hide js-tooltipListener'
-        onClick={(e) => handleChange(e)}
+        onClick={(e) => handleTooltip(e)}
       ></span>
       <Tooltip>
-        <form>
+        <form onSubmit={handleSubmit}>
           <label></label>
           <input
             type='number'
             name='population'
             onChange={handlePopulationChange}
+            onKeyDown={handleKeydown}
             value={population}
           />
           <input type='hidden' name='id' readOnly value={rowId} />

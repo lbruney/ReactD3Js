@@ -18,8 +18,9 @@ class Tooltip extends BaseUtil {
     this.tooltip.style.left = coords.x + 'px'
     this.tooltip.classList.add(this.css.active)
     let val = e.target.getAttribute('data-tooltip')
-    e.target.classList.add(this.css.active)
-    this.listener.setAttribute('data-val', val)
+    let cat = e.target.parentNode.getAttribute('data-bars')
+    this.addClass(e.target, this.css.active)
+    this.listener.setAttribute('data-val', `${val},${cat}`)
     this.listener.click()
   }
 

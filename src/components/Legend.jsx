@@ -32,24 +32,27 @@ function Legend({ colorScale, labels = {} }) {
     }
   }
 
-  return colorScale.domain().map((domain, index) => {
-    return (
-      <g key={`legend--${index}`}>
-        <rect
-          onMouseOver={(e) => handleFilter(e, domain)}
-          onMouseOut={(e) => handleFilter(e, domain, true)}
-          x='0'
-          y={yPos(index)}
-          width={sqSize}
-          height={sqSize}
-          fill={colorScale(domain)}
-        />
-        <text x='20' y={yPos(index) + 12}>
-          {labels[domain]}
-        </text>
-      </g>
-    )
-  })
+  return colorScale
+    .domain()
+    .reverse()
+    .map((domain, index) => {
+      return (
+        <g key={`legend--${index}`}>
+          <rect
+            onMouseOver={(e) => handleFilter(e, domain)}
+            onMouseOut={(e) => handleFilter(e, domain, true)}
+            x='0'
+            y={yPos(index)}
+            width={sqSize}
+            height={sqSize}
+            fill={colorScale(domain)}
+          />
+          <text x='20' y={yPos(index) + 12}>
+            {labels[domain]}
+          </text>
+        </g>
+      )
+    })
 }
 
 export default Legend
