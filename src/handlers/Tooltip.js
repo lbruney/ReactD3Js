@@ -10,6 +10,10 @@ class Tooltip extends BaseUtil {
     this.events()
   }
 
+  /**
+   * Handles user click of tooltip trigger
+   * @param {object} e Event
+   */
   handleClick(e) {
     this.stop(e)
     this.removeAllClass(this.bars, this.css.active)
@@ -25,6 +29,10 @@ class Tooltip extends BaseUtil {
     this.listener.click()
   }
 
+  /**
+   * Closes tooltip div
+   * @param {object} e Event
+   */
   closeTooltip(e) {
     this.stop(e)
     this.removeAllClass(this.bars, this.css.active)
