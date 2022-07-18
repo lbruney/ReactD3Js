@@ -1,5 +1,10 @@
 .c-chart 
   pos-rel()
+  &__xAxis 
+    +xsm()
+      text
+        font-size .6em
+
   &__graph 
     width 80vw
     height 70vh
@@ -11,16 +16,15 @@
     g 
       blk()
     svg 
-      pos-abs()
+      pos-rel()
       width 100%
-      margin-left 9%
-      height 90px
       top 20px
+      +xlg()
+        pos-abs()
+        margin-left 9%
+        height 90px
       +md-max()
-        pos-rel()
         p6()
-        margin-left 0
-        height initial
   
   input 
     width 80px

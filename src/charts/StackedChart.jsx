@@ -173,11 +173,7 @@ const StackedBarChart = ({
       .attr('y', function (d) {
         return y(d[1])
       })
-      .attr('height', function (d, i) {
-        if (i == 11) {
-          console.log(d)
-        }
-
+      .attr('height', function (d) {
         return y(d[0]) - y(d[1])
       })
       .attr('width', x.bandwidth())

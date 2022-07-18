@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { Link } from 'react-router-dom'
 import AppContext from '../context/AppContext'
 import StackedChart from '../charts/StackedChart'
 import { useContext } from 'react'
@@ -20,6 +19,9 @@ function CovidChart() {
           fully vaccinated.
         </p>
         <StackedChart data={data} labels={labels} />
+        <h2 className='txt--r'>
+          <Link to='/about'>About ?</Link>
+        </h2>
       </Card>
     </div>
   )

@@ -1,5 +1,5 @@
 input {
-  border: solid 1px $col-lgt-grey;
+  border: solid 1px #eee;
   padding: 3px;
 }
 .p1 {
@@ -48,8 +48,18 @@ body {
   text-size-adjust: none;
   position: relative;
 }
+li {
+  list-style-position: inside;
+}
+a,
+a:visited {
+  color: #14558e;
+}
 .hide {
   display: none;
+}
+.txt--r {
+  text-align: right;
 }
 .c-card {
   position: relative;
@@ -65,7 +75,7 @@ body {
 .c-card h2 {
   font-size: 22px;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin: 20px 0 5px 0;
 }
 .c-card.c-card--reverse {
   background-color: rgba(0,0,0,0.4);
@@ -73,6 +83,11 @@ body {
 }
 .c-chart {
   position: relative;
+}
+@media (max-width: 375px) {
+  .c-chart__xAxis text {
+    font-size: 0.6em;
+  }
 }
 .c-chart__graph {
   width: 80vw;
@@ -89,19 +104,21 @@ body {
   display: block;
 }
 .c-chart__legend svg {
-  position: absolute;
+  position: relative;
   width: 100%;
-  margin-left: 9%;
-  height: 90px;
   top: 20px;
+}
+@media (min-width: 1200px) {
+  .c-chart__legend svg {
+    position: absolute;
+    margin-left: 9%;
+    height: 90px;
+  }
 }
 @media (max-width: 1024px) {
   .c-chart__legend svg {
-    position: relative;
     font-size: 0.75rem;
     line-height: 1.833333333333333;
-    margin-left: 0;
-    height: initial;
   }
 }
 .c-chart input {
