@@ -4,6 +4,7 @@ import Legend from '../components/Legend'
 import Tooltip from '../components/Tooltip'
 import Swatch from '../fixtures/Swatch'
 import boot from '../handlers/boot'
+import BaseUtil from '../handlers/BaseUtil'
 
 const StackedBarChart = ({
   data,
@@ -12,6 +13,7 @@ const StackedBarChart = ({
   xLabel = 'Age group',
   diffMin = 30000
 }) => {
+  const util = new BaseUtil()
   const d3Chart = useRef()
   const [rowId, setRowId] = useState(0)
   const [startPopulation, setStartPopulation] = useState(0)
@@ -100,7 +102,7 @@ const StackedBarChart = ({
     const x = d3.scaleBand().domain(ages).range([0, width]).padding([0.3])
     svg
       .append('g')
-      .attr('class', 'c-chart__xAxis')
+      .attr('class', 'c-chart__xAxis js-chart__xAxis')
       .attr('transform', 'translate(0,' + height + ')')
       .call(d3.axisBottom(x).tickSizeOuter(0))
 
@@ -136,9 +138,7 @@ const StackedBarChart = ({
       .attr('transform', 'translate(0, 0)')
       .call(axis)
 
-    console.log(chartData)
     const stackedData = d3.stack().keys(subCategories)(chartData)
-    console.log(stackedData)
     const populationData = chartData.map((d) => {
       return {
         sum: totalPopulation(d),
@@ -222,8 +222,10 @@ const StackedBarChart = ({
         .attr('y', function (d) {
           return y(d.sum) - 3
         })
-        .attr('x', function (d) {
-          return x(xLabelText(d.ageRange)) + 10
+        .attr('text-anchor', 'middle')
+        .attr('x', function (d, i) {
+          let $el = document.querySelectorAll('.js-chart__xAxis .tick')[i]
+          return util.getTranslateX($el)
         })
     }
   }

@@ -145,3 +145,11 @@ body {
 .c-tooltip.is-active {
   display: block;
 }
+.c-tooltip__close {
+  position: absolute;
+  right: 10px;
+  top: 0;
+}
+.c-tooltip__close:hover {
+  cursor: pointer;
+}

@@ -5,6 +5,7 @@ class Tooltip extends BaseUtil {
     super(el)
     this.bars = this.el.querySelectorAll('.js-btn--tooltip')
     this.tooltip = this.el.querySelector('.js-tooltip')
+    this.close = this.el.querySelector('.js-btn--close')
     this.listener = this.el.querySelector('.js-tooltipListener')
     this.events()
   }
@@ -31,6 +32,7 @@ class Tooltip extends BaseUtil {
   }
 
   events() {
+    this.on(this.close, 'click', this.closeTooltip.bind(this))
     this.on(this.tooltip, 'dblclick', this.closeTooltip.bind(this))
     this.onAll(this.bars, 'click', this.handleClick.bind(this))
     this.on(window, 'resize', this.closeTooltip.bind(this))

@@ -53,6 +53,16 @@ class BaseUtil {
       e.addEventListener(event, callback, false)
     })
   }
+
+  getTranslate(el) {
+    return window.getComputedStyle(el).transform
+  }
+
+  getTranslateX(el) {
+    // matrix(scaleX, skewY, skewX, scaleY, translateX, translateY)
+    let matrix = this.getTranslate(el).split(',')
+    return +matrix[4]
+  }
 }
 
 export default BaseUtil
