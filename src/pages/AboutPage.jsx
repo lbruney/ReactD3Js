@@ -31,6 +31,22 @@ function AboutPage() {
           </li>
           <li>Manually tested only</li>
         </ul>
+        <h2>Production Improvements</h2>
+        <p>
+          The sample project in a professional setting would be improved with
+          the following. These were outside the scope of this project, so they
+          were excluded.
+        </p>
+        <ul>
+          <li>Tried and true Javascript Query library</li>
+          <li>Pesistant data from API</li>
+          <li>
+            No hard coded strings, like this file, but language change support
+            (Internationalization (i18n))
+          </li>
+          <li>Use of styleguide on stylus files</li>
+          <li>Use of regression testing and Javascript automated tests</li>
+        </ul>
         <h2>Considerations &amp; Further Reading</h2>
         <ul>
           <li>
